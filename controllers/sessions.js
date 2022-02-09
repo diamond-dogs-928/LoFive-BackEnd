@@ -11,6 +11,7 @@ router.get('/signUp', (req, res)=>{
     // set registration route folder
     res.render('')
 })
+
 router.post('/register', async (req,res, next)=>{
     try {
         if(req.body.password === req.body.verifyPassword) {
@@ -33,6 +34,13 @@ router.post('/register', async (req,res, next)=>{
         next(err)
     }
 })
+// router.get('/register/api', (req, res)=> {
+//     User.find({}, (err, username) => {
+//         res.json({username})
+      
+//     })
+// })
+
     router.post('/login', async(req,res,next) =>{
         try { const userLogin =await User.findOne({ username: req.body.username})
         if (userLogin) {
@@ -53,5 +61,13 @@ router.post('/register', async (req,res, next)=>{
 }
 }
 )
+
+
+router.get('/logout', (req, res) => {
+    req.session.destroy()
+    // set logout route
+    res.redirect('')
+})
+
 
 module.exports = router
