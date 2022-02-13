@@ -1,0 +1,27 @@
+{
+  "name": "lofive_backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/diamond-dogs-928/LoFive-BackEnd.git"
+  },
+  "bugs": {
+    "url": "https://github.com/diamond-dogs-928/LoFive-BackEnd/issues"
+  },
+  "homepage": "https://github.com/diamond-dogs-928/LoFive-BackEnd#readme",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "mongoose": "^6.2.1"
+  }
+}
