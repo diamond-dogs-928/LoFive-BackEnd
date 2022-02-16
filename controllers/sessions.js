@@ -32,8 +32,12 @@ router.post('/register', async (req, res, next) => {
         res.json({ message: 'username taken' });
         console.log('nope');
       } else {
-        const salt = bcrypt.genSaltSync(10);
-        const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+        // const salt = bcrypt.genSaltSync(10);
+
+        const hashedPassword = bcrypt.hashSync(
+          req.body.password,
+          bcrypt.genSaltSync(10)
+        );
         req.body.password = hashedPassword;
         const newUser = await User.create(req.body);
         console.log(newUser);
@@ -70,7 +74,7 @@ router.post('/login', async (req, res, next) => {
         req.session.username = userLogin.username;
         req.session.userLogin = true;
         // res.send(`${userLogin} loged in`)
-        console.log('user loged in');
+        console.log(req.session.username);
       } else {
         // redirect to login
         // res.redirect()
