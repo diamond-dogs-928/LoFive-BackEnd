@@ -72,7 +72,7 @@ router.post('/login', async (req, res, next) => {
       );
       if (validPassword) {
         req.session.username = userLogin.username;
-        req.session.userLogin = true;
+        req.session.loggedIn = true;
         // res.send(`${userLogin} loged in`)
         console.log(req.session.username);
       } else {
