@@ -3,11 +3,20 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 
+// test
 router.get('/', (req, res) => {
   // res.send('works')
   res.send('works');
 });
 
+// display all users // index
+router.get('/all_users', (req, res, next) => {
+  User.find({}, (err, users) => {
+    res.json(users);
+  });
+});
+
+// register new user
 router.get('/register', (req, res) => {
   // set registration route folder
   // res.render('')
@@ -40,6 +49,8 @@ router.post('/register', async (req, res, next) => {
     next(err);
   }
 });
+
+// login route
 router.get('/login', (req, res) => {
   User.find({}, (err, username) => {
     res.json({ username });
