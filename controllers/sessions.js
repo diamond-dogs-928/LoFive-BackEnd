@@ -64,6 +64,7 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', async (req, res, next) => {
+  // console.log(req.body);
   try {
     const userLogin = await User.findOne({ username: req.body.username });
     if (userLogin) {
@@ -74,18 +75,20 @@ router.post('/login', async (req, res, next) => {
       if (validPassword) {
         req.session.username = userLogin.username;
         req.session.loggedIn = true;
-        // res.send(`${userLogin} loged in`)
-        console.log(req.session.username);
+        res.send(`${userLogin} logged in`, userLogin);
+        // console.log('req.session.username' + req.session.username);
+        // console.log(req.session);
       } else {
         // redirect to login
         // res.redirect()
-        console.log(next);
+        console.log('next?');
       }
     } else {
       // redirect to login
       // res.redirect()
     }
   } catch (err) {
+    console.log(err);
     next(err);
   }
 });

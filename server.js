@@ -10,7 +10,7 @@ const userRoute = require('./controllers/sessions');
 const session = require('express-session');
 
 // Bring in cors to communicate across ports
-var whitelist = ['http://localhost:3000' /** other domains if any */];
+var whitelist = ['http://localhost:3000',  /** other domains if any */];
 var corsOptions = {
   credentials: true,
   origin: function (origin, callback) {
@@ -22,7 +22,10 @@ var corsOptions = {
   },
 };
 
-app.use(cors(corsOptions));
+app.use(
+  cors()
+  corsOptions
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -45,7 +48,6 @@ app.use((req, res, next) => {
   req.session.message = '';
   next();
 });
-
 
 // const authRequired = (req, res, next) => {
 //   if (req.session.loggedIn) {
