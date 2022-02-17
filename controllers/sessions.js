@@ -32,7 +32,7 @@ router.post('/register', async (req, res, next) => {
         res.json({ message: 'username taken' });
         console.log('nope');
       } else {
-        // const salt = bcrypt.genSaltSync(10);
+        const salt = bcrypt.genSaltSync(10);
 
         const hashedPassword = bcrypt.hashSync(
           req.body.password,
@@ -40,9 +40,10 @@ router.post('/register', async (req, res, next) => {
         );
         req.body.password = hashedPassword;
         const newUser = await User.create(req.body);
-        console.log(newUser);
         res.json({ message: 'username created', newUser });
         console.log('banger');
+        req.session = newUser;
+        console.log(req.session);
       }
     } else {
       // req.session.message = 'password must match'
@@ -63,6 +64,7 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', async (req, res, next) => {
+  // console.log(req.body);
   try {
     const userLogin = await User.findOne({ username: req.body.username });
     if (userLogin) {
@@ -73,18 +75,20 @@ router.post('/login', async (req, res, next) => {
       if (validPassword) {
         req.session.username = userLogin.username;
         req.session.loggedIn = true;
-        // res.send(`${userLogin} loged in`)
-        console.log(req.session.username);
+        res.send(`${userLogin} logged in`, userLogin);
+        // console.log('req.session.username' + req.session.username);
+        // console.log(req.session);
       } else {
         // redirect to login
         // res.redirect()
-        console.log(next);
+        console.log('next?');
       }
     } else {
       // redirect to login
       // res.redirect()
     }
   } catch (err) {
+    console.log(err);
     next(err);
   }
 });
