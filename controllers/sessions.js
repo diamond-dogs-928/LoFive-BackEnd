@@ -32,7 +32,7 @@ router.post('/register', async (req, res, next) => {
         res.json({ message: 'username taken' });
         console.log('nope');
       } else {
-        // const salt = bcrypt.genSaltSync(10);
+        const salt = bcrypt.genSaltSync(10);
 
         const hashedPassword = bcrypt.hashSync(
           req.body.password,
@@ -40,9 +40,10 @@ router.post('/register', async (req, res, next) => {
         );
         req.body.password = hashedPassword;
         const newUser = await User.create(req.body);
-        console.log(newUser);
         res.json({ message: 'username created', newUser });
         console.log('banger');
+        req.session = newUser;
+        console.log(req.session);
       }
     } else {
       // req.session.message = 'password must match'
