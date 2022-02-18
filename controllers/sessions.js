@@ -64,31 +64,32 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', async (req, res, next) => {
-  // console.log(req.body);
+  // console.log(req.body.username + '    hitting before the try/catch');
   try {
     const userLogin = await User.findOne({ username: req.body.username });
-    if (userLogin) {
-      const validPassword = bcrypt.compareSync(
+    // console.log(userLogin);
+    if (!userLogin) {
+      res.send('username is invalid');
+    } else {
+      const ifUserIsValid = bcrypt.compareSync(
         req.body.password,
         userLogin.password
       );
-      if (validPassword) {
-        req.session.username = userLogin.username;
-        req.session.loggedIn = true;
-        res.send(`${userLogin} logged in`, userLogin);
-        // console.log('req.session.username' + req.session.username);
-        // console.log(req.session);
+      if (ifUserIsValid) {
+        (req.session.loggedIn = true),
+          (req.session.username = userLogin.username);
+        res.status(200).json({
+          message: 'status 200: response ok',
+          user: ifUserIsValid,
+        });
       } else {
-        // redirect to login
-        // res.redirect()
-        console.log('next?');
+        res.status(500).json({
+          message: 'status 500: server error',
+        });
       }
-    } else {
-      // redirect to login
-      // res.redirect()
     }
   } catch (err) {
-    console.log(err);
+    console.log(err + '   error logging happening');
     next(err);
   }
 });
