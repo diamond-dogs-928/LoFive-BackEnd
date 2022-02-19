@@ -29,7 +29,10 @@ router.post('/register', async (req, res, next) => {
       const wantedUsername = req.body.username;
       const userExists = await User.findOne({ username: wantedUsername });
       if (userExists) {
-        res.json({ message: 'username taken' });
+        res.json({
+          message: 'username taken',
+          loggedIn: false,
+        });
         console.log('nope');
       } else {
         const salt = bcrypt.genSaltSync(10);
@@ -40,7 +43,7 @@ router.post('/register', async (req, res, next) => {
         );
         req.body.password = hashedPassword;
         const newUser = await User.create(req.body);
-        res.json({ message: 'username created', newUser });
+        res.json({ message: 'username created', newUser, loggedIn: true });
         console.log('banger');
         req.session = newUser;
         console.log(req.session);
@@ -64,36 +67,55 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', async (req, res, next) => {
+  // console.log(req.body.username + '    hitting before the try/catch');
   try {
     const userLogin = await User.findOne({ username: req.body.username });
-    if (userLogin) {
-      const validPassword = bcrypt.compareSync(
+    // console.log(userLogin);
+    if (!userLogin) {
+      res.send('username is invalid');
+    } else {
+      const ifUserIsValid = bcrypt.compareSync(
         req.body.password,
         userLogin.password
       );
-      if (validPassword) {
-        req.session.username = userLogin.username;
-        req.session.loggedIn = true;
-        // res.send(`${userLogin} loged in`)
-        console.log(req.session.username);
+      if (ifUserIsValid) {
+        (req.session.loggedIn = true),
+          (req.session.username = userLogin.username);
+        res.status(200).json({
+          message: 'status 200: response ok',
+          user: userLogin,
+          loggedIn: true,
+        });
       } else {
-        // redirect to login
-        // res.redirect()
-        console.log(next);
+        res.status(500).json({
+          message: 'status 500: server error',
+        });
       }
-    } else {
-      // redirect to login
-      // res.redirect()
     }
   } catch (err) {
+    console.log(err + '   error logging happening');
     next(err);
   }
 });
 
 router.get('/logout', (req, res) => {
-  req.session.destroy();
-  // set logout route
-  res.redirect('');
+  console.log('logout route is hit');
+  console.log(req.session);
+  try {
+    console.log('try block hit');
+    req.session.destroy();
+    res.status({
+      loggedOut: true,
+      message: 'logout successful',
+    });
+  } catch (err) {
+    res.status({
+      loggedOut: false,
+      message: 'logout failed',
+    });
+    console.log(err);
+    next(err);
+  }
 });
 
 module.exports = router;
