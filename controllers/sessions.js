@@ -29,7 +29,7 @@ router.post('/register', async (req, res, next) => {
       const wantedUsername = req.body.username;
       const userExists = await User.findOne({ username: wantedUsername });
       if (userExists) {
-        res.json({ message: 'username taken' });
+        res.json({ message: 'username taken', loggedIn: false });
         console.log('nope');
       } else {
         const salt = bcrypt.genSaltSync(10);
@@ -40,7 +40,7 @@ router.post('/register', async (req, res, next) => {
         );
         req.body.password = hashedPassword;
         const newUser = await User.create(req.body);
-        res.json({ message: 'username created', newUser });
+        res.json({ message: 'username created', newUser, loggedIn: true });
         console.log('banger');
         req.session = newUser;
         console.log(req.session);
@@ -80,7 +80,8 @@ router.post('/login', async (req, res, next) => {
           (req.session.username = userLogin.username);
         res.status(200).json({
           message: 'status 200: response ok',
-          user: ifUserIsValid,
+          user: userLogin,
+          loggedIn: true,
         });
       } else {
         res.status(500).json({
@@ -96,8 +97,10 @@ router.post('/login', async (req, res, next) => {
 
 router.get('/logout', (req, res) => {
   req.session.destroy();
-  // set logout route
-  res.redirect('');
+  res.json({
+    loggedOut: true,
+  });
+  // res.redirect('');
 });
 
 module.exports = router;
