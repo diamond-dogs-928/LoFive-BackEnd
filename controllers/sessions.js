@@ -29,7 +29,10 @@ router.post('/register', async (req, res, next) => {
       const wantedUsername = req.body.username;
       const userExists = await User.findOne({ username: wantedUsername });
       if (userExists) {
-        res.json({ message: 'username taken', loggedIn: false });
+        res.json({
+          message: 'username taken',
+          loggedIn: false,
+        });
         console.log('nope');
       } else {
         const salt = bcrypt.genSaltSync(10);
@@ -96,11 +99,23 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.json({
-    loggedOut: true,
-  });
-  // res.redirect('');
+  console.log('logout route is hit');
+  console.log(req.session);
+  try {
+    console.log('try block hit');
+    req.session.destroy();
+    res.status({
+      loggedOut: true,
+      message: 'logout successful',
+    });
+  } catch (err) {
+    res.status({
+      loggedOut: false,
+      message: 'logout failed',
+    });
+    console.log(err);
+    next(err);
+  }
 });
 
 module.exports = router;
