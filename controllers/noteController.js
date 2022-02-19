@@ -75,5 +75,26 @@ router.put('/:id', (req, res) => {
 
 })
 
+router.put('/edit/:id', (req, res) => {
+
+    console.log(req.params.id);
+    console.log(req.body);
+
+    Note.findByIdAndUpdate(req.params.id, req.body, {new: true}, (error, updatedNote) => {
+
+        console.log(req.params.id);
+        console.log(req.body);
+
+        if(error) {
+            res.status(400).json({error: error.message})
+        }
+
+        res.status(200).json(updatedNote)        
+        // res.json(updatedNote)        
+
+    })
+
+})
+
 
 module.exports = router
