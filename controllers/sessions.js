@@ -84,6 +84,7 @@ router.post('/login', async (req, res, next) => {
         res.status(200).json({
           message: 'status 200: response ok',
           user: userLogin,
+          username: userLogin.username,
           loggedIn: true,
         });
       } else {
