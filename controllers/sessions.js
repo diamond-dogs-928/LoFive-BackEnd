@@ -99,18 +99,18 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', async (req, res, next) => {
   console.log('logout route is hit');
-  console.log(req.session);
+  // console.log(req.session);
   try {
     console.log('try block hit');
     req.session.destroy();
-    res.status({
+    res.status(200).json({
       loggedOut: true,
       message: 'logout successful',
     });
   } catch (err) {
-    res.status({
+    res.status(500).json({
       loggedOut: false,
       message: 'logout failed',
     });
