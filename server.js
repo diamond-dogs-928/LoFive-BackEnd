@@ -12,7 +12,8 @@ const session = require('express-session');
 // Bring in cors to communicate across ports
 var whitelist = [
   'http://localhost:3000',
-  'http://localhost:5555' /** other domains if any */,
+  'http://localhost:5555',
+  '*' /** other domains if any */,
 ];
 var corsOptions = {
   credentials: true,
