@@ -78,4 +78,21 @@ router.put('/edit/:id', (req, res) => {
   );
 });
 
+// Search Route
+router.get('/search=:criteria', (req, res) => {
+  console.log(req.params);
+  Note.find({
+    $or: [
+      { owner: new RegExp(req.params.criteria, 'i') },
+      { post: new RegExp(req.params.criteria, 'i') },
+      { comments: new RegExp(req.params.criteria, 'i') },
+      { tags: new RegExp(req.params.criteria, 'i') },
+    ],
+  })
+    .collation({ locale: 'en_US' })
+    .then((notes) => {
+      res.json(notes);
+    });
+});
+
 module.exports = router;
