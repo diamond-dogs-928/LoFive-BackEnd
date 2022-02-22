@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const PORT = 4000;
+// const PORT = 4000;
 app.set('port', process.env.PORT || 4000 )
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const cors = require('cors');
