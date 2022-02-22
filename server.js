@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const PORT = 4000;
+app.set('port', process.env.PORT || 4000 )
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const cors = require('cors');
 const noteController = require('./controllers/noteController');
@@ -77,6 +78,6 @@ app.use((req, res, next) => {
 app.use('/session', userRoute);
 app.use('/notes', noteController);
 
-app.listen(PORT, () => {
-  console.log('Smooth tunes flowing out of port: ', PORT);
+app.listen(app.get('port'), () => {
+  console.log(`Smooth tunes flowing out of port: , ${app.get('port')}`);
 });
