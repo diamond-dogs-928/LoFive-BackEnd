@@ -14,6 +14,7 @@ const session = require('express-session');
 var whitelist = [
   'http://localhost:3000',
   'http://localhost:5555',
+  'https://git.heroku.com/lo-five-frontend.git',
   '*' /** other domains if any */,
 ];
 var corsOptions = {
@@ -50,30 +51,6 @@ app.use((req, res, next) => {
   req.session.message = '';
   next();
 });
-
-// const authRequired = (req, res, next) => {
-//   if (req.session.loggedIn) {
-//       // if the user is logged in, resolve the route
-//       next()
-//   } else {
-//       // otherwise redirect them to the log in page
-//       res.redirect('/session/login')
-//   }
-// }
-// new sample line
-
-// app.use('/fruits', fruitsController)
-// app.use('/session', sessionsController)
-
-// // the following is a very goofy artificial example to show how cookies and sessions work
-// app.get('/setCookie/:data', (req, res) => {
-//     req.session.data = req.params.data
-//     res.send('session data set')
-// })
-
-// app.get('/getSessionInfo', (req, res) => {
-//     res.send(req.session.data)
-// })
 
 app.use('/session', userRoute);
 app.use('/notes', noteController);
