@@ -46,6 +46,16 @@ router.delete('/:id', (req, res) => {
   });
 });
 
+// Show owner's posts
+router.get('/profile/:owner', (req, res, next) => {
+  Note.find({ owner: req.params.owner }, (error, notes) => {
+    if (error) {
+      res.status(500).json({ error: error });
+    }
+    res.json(notes);
+  });
+});
+
 // Update Route:
 router.put('/:id', (req, res) => {
   Note.findByIdAndUpdate(
@@ -76,6 +86,25 @@ router.put('/edit/:id', (req, res) => {
       res.status(200).json(updatedNote);
     }
   );
+});
+
+// Search Route
+router.get('/search/=:criteria', (req, res) => {
+  console.log('search route hit');
+  console.log(req.params);
+  Note.find({
+    $or: [
+      { owner: new RegExp(req.params.criteria, 'i') },
+      { post: new RegExp(req.params.criteria, 'i') },
+      { comments: new RegExp(req.params.criteria, 'i') },
+      { tags: new RegExp(req.params.criteria, 'i') },
+    ],
+  })
+    .collation({ locale: 'en_US' })
+    .then((notes) => {
+      res.json(notes);
+      console.log(notes);
+    });
 });
 
 module.exports = router;
