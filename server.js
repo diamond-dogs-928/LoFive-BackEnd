@@ -14,7 +14,7 @@ const session = require('express-session');
 var whitelist = [
   'http://localhost:3000',
   'http://localhost:5555',
-  'https://git.heroku.com/lo-five-frontend.git',
+  'https://lo-five-frontend.herokuapp.com/',
   '*' /** other domains if any */,
 ];
 var corsOptions = {
@@ -58,3 +58,4 @@ app.use('/notes', noteController);
 app.listen(app.get('port'), () => {
   console.log(`Smooth tunes flowing out of port: , ${app.get('port')}`);
 });
+
