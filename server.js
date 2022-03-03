@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 // const PORT = 4000;
-app.set('port', process.env.PORT || 4000 )
+app.set('port', process.env.PORT || 4000);
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const cors = require('cors');
 const noteController = require('./controllers/noteController');
@@ -13,6 +13,7 @@ const session = require('express-session');
 // Bring in cors to communicate across ports
 var whitelist = [
   'http://localhost:3000',
+  'http://localhost:3001',
   'http://localhost:5555',
   'https://lo-five-frontend.herokuapp.com/',
   '*' /** other domains if any */,
@@ -58,4 +59,3 @@ app.use('/notes', noteController);
 app.listen(app.get('port'), () => {
   console.log(`Smooth tunes flowing out of port: , ${app.get('port')}`);
 });
-
