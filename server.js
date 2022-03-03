@@ -13,6 +13,7 @@ const session = require('express-session');
 // Bring in cors to communicate across ports
 var whitelist = [
   'http://localhost:3000',
+  'http://localhost:3001',
   'http://localhost:5555',
   'https://lo-five-frontend.herokuapp.com/',
   '*' /** other domains if any */,
