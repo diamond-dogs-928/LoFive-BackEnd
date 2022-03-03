@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 // const PORT = 4000;
-app.set('port', process.env.PORT || 4000 )
+app.set('port', process.env.PORT || 4000);
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const cors = require('cors');
 const noteController = require('./controllers/noteController');
@@ -29,7 +29,7 @@ var corsOptions = {
   },
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -59,4 +59,3 @@ app.use('/notes', noteController);
 app.listen(app.get('port'), () => {
   console.log(`Smooth tunes flowing out of port: , ${app.get('port')}`);
 });
-
